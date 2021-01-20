@@ -257,19 +257,40 @@ const Home = ({ navigation }) => {
     }
     function renderHeader() {
         return (
-            <View style={{ flexDirection: 'row', height:50, justifyContent: 'center' }}>
-                <View
+            <View style={{ flexDirection: 'row', height:50 }}>
+                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                    <View
+                        style={{
+                            width: '70%',
+                            height: '100%',
+                            backgroundColor: COLORS.lightGray3,
+                            alignItems: 'center',
+                            borderRadius: SIZES.radius,
+                            justifyContent: 'center'
+                        }}
+                    >
+                        <Text style={{ ...FONTS.h3 }}>{currentLocation.streetName}</Text>
+                    </View>
+                </View>
+                <TouchableOpacity
                     style={{
-                        width: '70%',
-                        height: '100%',
-                        backgroundColor: COLORS.lightGray3,
-                        alignItems: 'center',
-                        borderRadius: SIZES.radius,
+                        width: 50,
+                        paddingRight: SIZES.padding * 2,
                         justifyContent: 'center'
                     }}
+                    onPress={() => navigation.navigate("Filter", {
+                        restaurants
+                    })}
                 >
-                    <Text style={{ ...FONTS.h3 }}>{currentLocation.streetName}</Text>
-                </View>
+                    <Image
+                        source={icons.list}
+                        resizeMode="contain"
+                        style={{
+                            width: 25,
+                            height: 25
+                        }}
+                    />
+                </TouchableOpacity>
             </View>
         )
     }
@@ -325,8 +346,8 @@ const Home = ({ navigation }) => {
 
         return (
             <View style={{ padding: SIZES.padding * 2 }}>
-                <Text style={{...FONTS.h1}}>Main</Text>
-                <Text style={{...FONTS.h1}}>Categories</Text>
+                <Text style={{...FONTS.h1}}>Main Categories</Text>
+                {/* <Text style={{...FONTS.h1}}>Categories</Text> */}
 
                 <FlatList
                     data={categories}
