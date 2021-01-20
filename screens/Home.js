@@ -12,7 +12,7 @@ import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 import { icons, images, SIZES, COLORS, FONTS } from '../constants';
 
-const Home = () => {
+const Home = ({ navigation }) => {
     // Dummy Data
 
     const initialCurrentLocation = {
@@ -299,7 +299,10 @@ const Home = () => {
                     style={{
                         marginBottom: SIZES.padding * 2,
                     }}
-                    // onPress={() => onSelectCategory(item)}
+                    onPress={() => navigation.navigate("Restaurant", {
+                        item,
+                        currentLocation
+                    })}
                 >
                     <View style={{ 
                         marginBottom: SIZES.padding
@@ -333,15 +336,49 @@ const Home = () => {
 
                     {/* Restaurant Info */}
                     <Text style={{ ...FONTS.body2 }}>{item.name}</Text>
-                    {/* <Text
+
+                    <View
                         style={{
                             marginTop: SIZES.padding,
-                            color: (selectedCategory?.name == item.name) ? COLORS.white : COLORS.black,
-                            ...FONTS.body5
+                            flexDirection: 'row'
                         }}
                     >
-                        {item.name}
-                    </Text> */}
+                        <Image
+                            source={icons.star}
+                            style={{
+                                height: 20,
+                                width: 20,
+                                tintColor: COLORS.primary,
+                                marginRight: 10
+                            }}
+                        />
+                        <Text style={{ ...FONTS.body3 }}>{item.rating}</Text>
+                        <View
+                            style={{
+                                flexDirection: 'row',
+                                marginLeft: 10
+                            }}
+                        >
+                            {
+                                item.tags.slice(0,2).map((tag)=>{
+                                    return (
+                                        <View
+                                            style={{ flexDirection: 'row' }}
+                                            key={tag}
+                                        >
+                                            <Text style={{ ...FONTS.body3 }}>{tag}</Text>
+                                            <Text style={{ ...FONTS.h3, color: COLORS.darkgray }}> . </Text>
+                                        </View>
+                                    )
+                                })
+                            }
+
+                            {
+                                <Text style={{ ...FONTS.body3 }}>{item.distance}</Text>
+                            }
+                        </View>
+                    </View>
+                 
                 </TouchableOpacity>
             )
         }
