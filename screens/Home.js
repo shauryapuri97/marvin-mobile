@@ -8,6 +8,7 @@ import {
     Image,
     FlatList
 } from 'react-native';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 import { icons, images, SIZES, COLORS, FONTS } from '../constants';
 
@@ -232,7 +233,7 @@ const Home = () => {
                 <TouchableOpacity
                     style={{
                         padding: SIZES.padding * 2,
-                        backgroundColor: COLORS.primary,
+                        backgroundColor: (selectedCategory?.name == item.name) ? COLORS.primary : COLORS.white,
                         borderRadius: SIZES.radius,
                         alignItems: "center",
                         justifyContent: "center",
@@ -248,7 +249,7 @@ const Home = () => {
                             borderRadius: 25,
                             alignItems: "center",
                             justifyContent: "center",
-                            backgroundColor: COLORS.white
+                            backgroundColor: (selectedCategory?.name == item.name) ? COLORS.white : COLORS.lightGray
                         }}
                     >
                         <Image
@@ -264,7 +265,7 @@ const Home = () => {
                     <Text
                         style={{
                             marginTop: SIZES.padding,
-                            color: COLORS.white,
+                            color: (selectedCategory?.name == item.name) ? COLORS.white : COLORS.black,
                             ...FONTS.body5
                         }}
                     >
