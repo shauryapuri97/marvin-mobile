@@ -196,7 +196,7 @@ const Home = () => {
 
     const [categories, setCategories] = React.useState(categoryData)
     const [selectedCategory, setSelectedCategory] = React.useState(null)
-    const [restaurants, setRestaurants] = React.useState(null)
+    const [restaurants, setRestaurants] = React.useState(restaurantData)
     const [currentLocation, setCurrentLocation] = React.useState(initialCurrentLocation)
 
     function onSelectCategory(category) {
@@ -274,6 +274,7 @@ const Home = () => {
                 </TouchableOpacity>
             )
         }
+
         return (
             <View style={{ padding: SIZES.padding * 2 }}>
                 <Text style={{...FONTS.h1}}>Main</Text>
@@ -291,10 +292,78 @@ const Home = () => {
         )
     }
 
+    function renderRestaurantList() {
+        const renderItem = ({ item }) => {
+            return (
+                <TouchableOpacity
+                    style={{
+                        marginBottom: SIZES.padding * 2,
+                    }}
+                    // onPress={() => onSelectCategory(item)}
+                >
+                    <View style={{ 
+                        marginBottom: SIZES.padding
+                    }}>
+                        <Image
+                            source={{ uri: item.image }}
+                            resizeMode="cover"
+                            style={{
+                                width: "100%",
+                                height: 200,
+                                borderRadius: SIZES.radius
+                            }}
+                        />
+                        <View
+                            style={{
+                                position: 'absolute',
+                                bottom: 0,
+                                height: 50,
+                                width: SIZES.width * 0.3,
+                                backgroundColor: COLORS.white,
+                                borderTopRightRadius: SIZES.radius,
+                                borderBottomLeftRadius: SIZES.radius,
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                ...styles.shadow
+                            }}
+                        >
+                            <Text style={{ ...FONTS.h4 }}>{item.eta}</Text>
+                        </View>
+                    </View>
+
+                    {/* Restaurant Info */}
+                    <Text style={{ ...FONTS.body2 }}>{item.name}</Text>
+                    {/* <Text
+                        style={{
+                            marginTop: SIZES.padding,
+                            color: (selectedCategory?.name == item.name) ? COLORS.white : COLORS.black,
+                            ...FONTS.body5
+                        }}
+                    >
+                        {item.name}
+                    </Text> */}
+                </TouchableOpacity>
+            )
+        }
+
+        return (
+            <FlatList
+                data={restaurants}
+                keyExtractor={item=>`${item.id}`}
+                renderItem={renderItem}
+                contentContainerStyle={{ 
+                    paddingHorizontal: SIZES.padding * 2,
+                    paddingBottom: 30
+                }}
+            />
+        )
+    }
+
     return (
         <SafeAreaView style={styles.container}>
             {renderHeader()}
             {renderMainCategories()}
+            {renderRestaurantList()}
         </SafeAreaView>
     )
 }
