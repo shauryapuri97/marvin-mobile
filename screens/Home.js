@@ -25,28 +25,23 @@ const Home = () => {
     const categoryData = [
         {
             id: 1,
-            name: "Rice",
-            icons: icons.rice_bowl,
+            name: "Salads",
+            icon: icons.salad,
         },
         {
             id: 2,
-            name: "Noodles",
-            icons: icons.noodle,
+            name: "Sushi",
+            icon: icons.sushi,
         },
         {
             id: 3,
-            name: "Hot Dog",
-            icons: icons.hotdog,
+            name: "Alcohol",
+            icon: icons.drink,
         },
         {
             id: 4,
-            name: "Drinks",
-            icons: icons.drink,
-        },
-        {
-            id: 5,
-            name: "Donut",
-            icons: icons.donut,
+            name: "American",
+            icon: icons.fries,
         },
     ]
 
@@ -203,6 +198,14 @@ const Home = () => {
     const [restaurants, setRestaurants] = React.useState(null)
     const [currentLocation, setCurrentLocation] = React.useState(initialCurrentLocation)
 
+    function onSelectCategory(category) {
+        //filter restaurant
+        let restaurantList = restaurantData.filter(a => a.tags.includes(category.name))
+
+        setRestaurants(restaurantList)
+
+        setSelectedCategory(category)
+    }
     function renderHeader() {
         return (
             <View style={{ flexDirection: 'row', height:50, justifyContent: 'center' }}>
@@ -221,14 +224,81 @@ const Home = () => {
             </View>
         )
     }
+
+    function renderMainCategories() {
+
+        const renderItem = ({item}) => {
+            return (
+                <TouchableOpacity
+                    style={{
+                        padding: SIZES.padding * 2,
+                        backgroundColor: COLORS.primary,
+                        borderRadius: SIZES.radius,
+                        alignItems: "center",
+                        justifyContent: "center",
+                        marginRight: SIZES.padding,
+                        ...styles.shadow
+                    }}
+                    onPress={() => onSelectCategory(item)}
+                >
+                    <View
+                        style={{
+                            width: 50,
+                            height: 50,
+                            borderRadius: 25,
+                            alignItems: "center",
+                            justifyContent: "center",
+                            backgroundColor: COLORS.white
+                        }}
+                    >
+                        <Image
+                            source={item.icon}
+                            resizeMode="contain"
+                            style={{
+                                width: 30,
+                                height: 30
+                            }}
+                        />
+                    </View>
+
+                    <Text
+                        style={{
+                            marginTop: SIZES.padding,
+                            color: COLORS.white,
+                            ...FONTS.body5
+                        }}
+                    >
+                        {item.name}
+                    </Text>
+                </TouchableOpacity>
+            )
+        }
+        return (
+            <View style={{ padding: SIZES.padding * 2 }}>
+                <Text style={{...FONTS.h1}}>Main</Text>
+                <Text style={{...FONTS.h1}}>Categories</Text>
+
+                <FlatList
+                    data={categories}
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    keyExtractor={item=>`${item.id}`}
+                    renderItem={renderItem}
+                    contentContainerStyle={{ paddingVertical: SIZES.padding * 2 }}
+                />
+            </View>
+        )
+    }
+
     return (
-        <SafeAreaView style={StyleSheet.container}>
+        <SafeAreaView style={styles.container}>
             {renderHeader()}
+            {renderMainCategories()}
         </SafeAreaView>
     )
 }
 
-const style = StyleSheet.create({
+const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: COLORS.lightGray4
