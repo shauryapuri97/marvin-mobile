@@ -46,6 +46,24 @@ const Home = ({ navigation }) => {
         },
     ]
 
+    const services = [
+        {
+            id: 1,
+            name: "Uber Eats",
+            icon: icons.ubereatsLogo
+        },
+        {
+            id: 2,
+            name: "Deliveroo",
+            icon: icons.deliverooLogo
+        },
+        {
+            id: 3,
+            name: "Just Eat",
+            icon: icons.justeatLogo
+        }
+    ]
+
     //Price Rating
     const affordable = 1
     const fairPrice = 2
@@ -68,7 +86,12 @@ const Home = ({ navigation }) => {
             promotion: null,
             isOpen: true,
             closedMessage: "",
-            eta: "20 – 35 MINS"
+            eta: "20 – 35 MINS",
+            availableOn: [
+                "Deliveroo",
+                "Uber Eats",
+                "Just Eat"
+            ]
         },
         {
             name: "Nando's",
@@ -83,7 +106,11 @@ const Home = ({ navigation }) => {
             promotion: null,
             isOpen: true,
             closedMessage: "",
-            eta: "10 – 20 MINS"
+            eta: "10 – 20 MINS",
+            availableOn: [
+                "Deliveroo",
+                "Uber Eats"
+            ]
         },
         {
             name: "KFC",
@@ -101,7 +128,10 @@ const Home = ({ navigation }) => {
             promotion: null,
             isOpen: true,
             closedMessage: "",
-            eta: "15 – 30 MINS"
+            eta: "15 – 30 MINS",
+            availableOn: [
+                "Deliveroo"
+            ]
         },
         {
             name: "Charco Charco 炭牛の屋 Express",
@@ -119,7 +149,11 @@ const Home = ({ navigation }) => {
             promotion: null,
             isOpen: true,
             closedMessage: "",
-            eta: "45 MINS"
+            eta: "45 MINS",
+            availableOn: [
+                "Deliveroo",
+                "Just Eat"
+            ]
         },
         {
             name: "Waitrose & Partners",
@@ -137,7 +171,12 @@ const Home = ({ navigation }) => {
             promotion: null,
             isOpen: true,
             closedMessage: "",
-            eta: "15 – 30 MINS"
+            eta: "15 – 30 MINS",
+            availableOn: [
+                "Deliveroo",
+                "Uber Eats",
+                "Just Eat"
+            ]
         },
         {
             name: "Bleecker Burger",
@@ -154,7 +193,10 @@ const Home = ({ navigation }) => {
             promotion: null,
             isOpen: true,
             closedMessage: "",
-            eta: "15 – 25 MINS"
+            eta: "15 – 25 MINS",
+            availableOn: [
+                "Just Eat"
+            ]
         },
         {
             name: "Pasta Evangelists",
@@ -172,7 +214,10 @@ const Home = ({ navigation }) => {
             promotion: "Meal Deals",
             isOpen: true,
             closedMessage: "",
-            eta: "15 – 30 MINS"
+            eta: "15 – 30 MINS",
+            availableOn: [
+                "Uber Eats"
+            ]
         },
         {
             name: "Chipotle Mexican Grill",
@@ -190,7 +235,10 @@ const Home = ({ navigation }) => {
             promotion: null,
             isOpen: true,
             closedMessage: "",
-            eta: "15 – 30 MINS"
+            eta: "15 – 30 MINS",
+            availableOn: [
+                "Deliveroo"
+            ]
         },
     ]
 
@@ -316,6 +364,53 @@ const Home = ({ navigation }) => {
                                 borderRadius: SIZES.radius
                             }}
                         />
+                        <View
+                            style={{
+                                position: 'absolute',
+                                top: 0,
+                                right: 0,
+                                height: 50,
+                                width: (item.availableOn.length >= 3) ? SIZES.width * 0.4 : (item.availableOn.length == 2) ? SIZES.width * 0.3 : SIZES.width * 0.2,
+                                backgroundColor: COLORS.white,
+                                borderTopRightRadius: SIZES.radius,
+                                borderBottomLeftRadius: SIZES.radius,
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                flexDirection: 'row',
+                                ...styles.shadow
+                            }}
+                        >
+                            {   
+                                item.availableOn.map((s)=>{
+                                    return(
+                                        services.map((service)=>{
+                                            return (
+                                                service.name == s ?
+                                                    <View
+                                                        style={{
+                                                            flexDirection: 'row',
+                                                            alignItems: 'center',
+                                                            justifyContent: 'center'
+                                                        }}
+                                                    >
+                                                        <Image
+                                                            source={service.icon}
+                                                            resizeMode="contain"
+                                                            style={{
+                                                                width: 30,
+                                                                height: 30,
+                                                                marginRight: 10
+                                                            }}
+                                                        />
+                                                    </View>
+                                                :
+                                                    null
+                                            )
+                                        })
+                                    )
+                                })
+                            }
+                        </View>
                         <View
                             style={{
                                 position: 'absolute',
