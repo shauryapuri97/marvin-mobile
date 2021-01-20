@@ -20,7 +20,7 @@ const App = () => {
         <Stack.Screen name="Restaurant" component={Restaurant} />
       </Stack.Navigator>
     </NavigationContainer>
-  )
+  );
 }
 
 export default App;
