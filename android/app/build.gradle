@@ -1,3 +1,4 @@
+googlePlayServicesVersion = "20.15.16" // or set latest version
 apply plugin: "com.android.application"
 
 import com.android.build.OutputFile

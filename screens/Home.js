@@ -6,23 +6,24 @@ import {
     StyleSheet,
     TouchableOpacity,
     Image,
-    FlatList
+    FlatList,
+    Alert,
+    Linking,
+    PermissionsAndroid,
+    Platform,
+    ToastAndroid
 } from 'react-native';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 import { icons, images, SIZES, COLORS, FONTS } from '../constants';
 
+import Geolocation from 'react-native-geolocation-service';
+import Geocoder from 'react-native-geocoding';
+import appConfig from '../app.json';
+
 const Home = ({ navigation }) => {
+    
     // Dummy Data
-
-    const initialCurrentLocation = {
-        streetName: "4 Hebden Place",
-        gps: {
-            latitude:51.480150,
-            longitude:-0.128960,
-        }
-    }
-
     const categoryData = [
         {
             id: 1,
@@ -283,11 +284,111 @@ const Home = ({ navigation }) => {
             ]
         },
     ]
-
+    
     const [categories, setCategories] = React.useState(categoryData)
     const [selectedCategory, setSelectedCategory] = React.useState(null)
     const [restaurants, setRestaurants] = React.useState(restaurantData)
-    const [currentLocation, setCurrentLocation] = React.useState(initialCurrentLocation)
+    const [currentLocation, setCurrentLocation] = React.useState({})
+    const [currentPostCode, setCurrentPostcode] = React.useState(null)
+
+    const hasLocationPermissionIOS = async () => {
+        const openSetting = () => {
+            Linking.openSettings().catch(() => {
+            Alert.alert('Unable to open settings');
+            });
+        };
+
+        const status = await Geolocation.requestAuthorization('whenInUse');
+
+        if (status === 'granted') {
+            return true;
+        }
+
+        if (status === 'denied') {
+            Alert.alert('Location permission denied');
+        }
+
+        if (status === 'disabled') {
+            Alert.alert(
+            `Turn on Location Services to allow "${appConfig.displayName}" to determine your location.`,
+            '',
+            [
+                { text: 'Go to Settings', onPress: openSetting },
+                { text: "Don't Use Location", onPress: () => {} },
+            ],
+            );
+        }
+
+        return false;
+    };
+    
+    const hasLocationPermission = async () => {
+        if (Platform.OS === 'ios') {
+          const hasPermission = hasLocationPermissionIOS();
+          return hasPermission;
+        }
+    
+        if (Platform.OS === 'android' && Platform.Version < 23) {
+          return true;
+        }
+    
+        const hasPermission = await PermissionsAndroid.check(
+          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        );
+    
+        if (hasPermission) {
+          return true;
+        }
+    
+        const status = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        );
+    
+        if (status === PermissionsAndroid.RESULTS.GRANTED) {
+          return true;
+        }
+    
+        if (status === PermissionsAndroid.RESULTS.DENIED) {
+          ToastAndroid.show(
+            'Location permission denied by user.',
+            ToastAndroid.LONG,
+          );
+        } else if (status === PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN) {
+          ToastAndroid.show(
+            'Location permission revoked by user.',
+            ToastAndroid.LONG,
+          );
+        }
+    
+        return false;
+    };
+
+    React.useEffect(()=>{
+        Geocoder.init("AIzaSyD4sOsYoT0V_tyi3kSWG5O3w4G6DavIvh0");
+        if(hasLocationPermission()) {
+            Geolocation.getCurrentPosition(
+                (position) => {
+                    Geocoder.from(position?.coords.latitude, position?.coords.longitude)
+                        .then(json => {
+                            const addressComponent = json.results[0].formatted_address;
+                            setCurrentLocation(addressComponent);
+                        })
+                        .catch(err=>console.warn(err));
+                },
+                (error) => {
+                    console.log(error)
+                },
+                {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+            );
+        }
+    },[])
+
+    React.useEffect(()=>{
+        const addressFormat = currentLocation+'';
+        addressElements = addressFormat?.split(", ");
+        const postCodeElements = (addressElements[addressElements.length-2] + '').split(" ")
+        setCurrentPostcode(postCodeElements[postCodeElements.length-2]+" "+postCodeElements[postCodeElements.length-1])
+    },[currentLocation])
 
     function onSelectCategory(category) {
         //filter restaurant
@@ -310,6 +411,7 @@ const Home = ({ navigation }) => {
                             borderRadius: SIZES.radius,
                             justifyContent: 'center'
                         }}
+                        onPress={() => console.log(currentPostCode)}
                     >   
                         <View
                             style={{
@@ -328,7 +430,8 @@ const Home = ({ navigation }) => {
                                     alignSelf:'center'
                                 }}
                             />
-                            <Text style={{ ...FONTS.h3, alignSelf: 'center', marginLeft: SIZES.padding }}>{currentLocation.streetName}</Text>
+                            {/* <Text style={{ ...FONTS.h3, alignSelf: 'center', marginLeft: SIZES.padding }}>{currentLocation.streetName}</Text> */}
+                            <Text style={{ ...FONTS.h3, alignSelf: 'center', marginLeft: SIZES.padding }}>{(currentLocation+'').split(", ")[(currentLocation+'').split(", ").length-2]}</Text>
                         </View>
                     </TouchableOpacity>
                 </View>
@@ -564,7 +667,7 @@ const Home = ({ navigation }) => {
         return (
             <FlatList
                 data={restaurants}
-                keyExtractor={item=>`${item.id}`}
+                keyExtractor={item=>`${item.name}`}
                 renderItem={renderItem}
                 contentContainerStyle={{ 
                     paddingHorizontal: SIZES.padding * 2,
