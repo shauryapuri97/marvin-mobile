@@ -18,6 +18,7 @@ const Restaurant = ({ route, navigation }) => {
     const [restaurant, setRestaurant] = React.useState(null);
     const [currentLocation, setCurrentLocation] = React.useState(null);
     const [serviceIcons, setServiceIcons] = React.useState(null);
+    const [likedRestaurant, setLikedRestaurant] = React.useState(null);
 
     React.useEffect(()=>{
         let {item, currentLocation, services } = route.params;
@@ -75,18 +76,33 @@ const Restaurant = ({ route, navigation }) => {
                             marginRight: SIZES.padding * 0.5,
                             justifyContent: 'center'
                         }}
-                        // onPress={() => navigation.navigate("Filter", {
-                        //     restaurants
-                        // })}
-                    >
-                        <Image
-                            source={icons.like}
-                            resizeMode="contain"
-                            style={{
-                                width: 25,
-                                height: 25
-                            }}
-                        />
+                        onPress={()=>{
+                            likedRestaurant == null ?
+                                setLikedRestaurant(restaurant)
+                            : setLikedRestaurant(null)
+                        }}
+                    >   
+                        {
+                            likedRestaurant !== null ?
+                                <Image
+                                    source={icons.like}
+                                    resizeMode="contain"
+                                    style={{
+                                        width: 25,
+                                        height: 25
+                                    }}
+                                />
+                            :
+                                <Image
+                                    source={icons.likeOutline}
+                                    resizeMode="contain"
+                                    style={{
+                                        width: 25,
+                                        height: 25
+                                    }}
+                                />
+                        }
+                        
                     </TouchableOpacity>
                     <TouchableOpacity
                         style={{
