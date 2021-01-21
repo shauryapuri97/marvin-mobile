@@ -301,18 +301,36 @@ const Home = ({ navigation }) => {
         return (
             <View style={{ flexDirection: 'row', height:50 }}>
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                    <View
+                    <TouchableOpacity
                         style={{
-                            width: '70%',
+                            width: '90%',
                             height: '100%',
                             backgroundColor: COLORS.lightGray3,
-                            alignItems: 'center',
+                            alignContent: 'flex-start',
                             borderRadius: SIZES.radius,
                             justifyContent: 'center'
                         }}
-                    >
-                        <Text style={{ ...FONTS.h3 }}>{currentLocation.streetName}</Text>
-                    </View>
+                    >   
+                        <View
+                            style={{
+                                flexDirection:'row',
+                                alignItems:'center',
+                                marginLeft: SIZES.padding * 2,
+                                justifyContent:'flex-start'
+                            }}
+                        >
+                            <Image
+                                source={icons.pin}
+                                resizeMode="contain"
+                                style={{
+                                    width: 25,
+                                    height: 25,
+                                    alignSelf:'center'
+                                }}
+                            />
+                            <Text style={{ ...FONTS.h3, alignSelf: 'center', marginLeft: SIZES.padding }}>{currentLocation.streetName}</Text>
+                        </View>
+                    </TouchableOpacity>
                 </View>
                 <TouchableOpacity
                     style={{
