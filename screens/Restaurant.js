@@ -6,7 +6,7 @@ import {
     Text,
     TouchableOpacity,
     Image,
-    Animated
+    FlatList
 } from 'react-native';
 
 import {isIphoneX } from 'react-native-iphone-x-helper';
@@ -17,12 +17,14 @@ const Restaurant = ({ route, navigation }) => {
 
     const [restaurant, setRestaurant] = React.useState(null);
     const [currentLocation, setCurrentLocation] = React.useState(null);
+    const [serviceIcons, setServiceIcons] = React.useState(null);
 
     React.useEffect(()=>{
-        let {item, currentLocation } = route.params;
+        let {item, currentLocation, services } = route.params;
 
         setRestaurant(item);
         setCurrentLocation(currentLocation);
+        setServiceIcons(services);
     })
 
     function renderHeader() {
@@ -114,6 +116,7 @@ const Restaurant = ({ route, navigation }) => {
             <TouchableOpacity
                 style={{
                     marginBottom: SIZES.padding * 2,
+                    marginTop: SIZES.padding * 2
                 }}
             >
                 <View style={{ 
@@ -205,16 +208,113 @@ const Restaurant = ({ route, navigation }) => {
         )
     }
 
-    // function renderServices() {
-    //     return (
-
-    //     )
-    // }
+    function renderServices() {
+        const renderItem = ({ item }) => {
+            return (
+                <TouchableOpacity
+                    style={{
+                        marginBottom: SIZES.padding * 2
+                    }}
+                    // onPress={() => navigation.navigate("Restaurant", {
+                    //     item,
+                    //     currentLocation
+                    // })}
+                >
+                    <View style={{ 
+                        marginBottom: SIZES.padding
+                    }}>
+                        {
+                            serviceIcons?.map((service)=>{
+                                return (
+                                    service.name == item.service ?
+                                        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}>
+                                            <View
+                                                style={{
+                                                    width: '100%',
+                                                    height: '100%',
+                                                    backgroundColor: COLORS.lightGray3,
+                                                    alignItems: 'center',
+                                                    borderRadius: SIZES.radius  * 0.2,
+                                                    justifyContent: 'space-between',
+                                                    padding: SIZES.padding,
+                                                    flexDirection: 'row'
+                                                }}
+                                            >
+                                                <Image
+                                                    source={service.icon}
+                                                    resizeMode="contain"
+                                                    style={{
+                                                        width: 50,
+                                                        height: 50,
+                                                        marginRight: 10,
+                                                        marginLeft: SIZES.padding,
+                                                        margin: SIZES.padding
+                                                    }}
+                                                />
+                                                <View
+                                                    style={{
+                                                        width: '40%',
+                                                        height: '70%',
+                                                        backgroundColor: COLORS.white,
+                                                        alignItems: 'center',
+                                                        borderRadius: SIZES.radius,
+                                                        justifyContent: 'center',
+                                                        padding: SIZES.padding
+                                                    }}
+                                                >
+                                                    <Text style={{ ...FONTS.body3 }}>{item.eta}</Text>
+                                                </View>
+                                                <View
+                                                    style={{
+                                                        width: '15%',
+                                                        height: '70%',
+                                                        backgroundColor: COLORS.white,
+                                                        alignItems: 'center',
+                                                        borderRadius: SIZES.radius,
+                                                        justifyContent: 'center',
+                                                        padding: SIZES.padding
+                                                    }}
+                                                >
+                                                    <Image
+                                                        source={icons.go}
+                                                        resizeMode="contain"
+                                                        style={{
+                                                            width: 25,
+                                                            height: 25,
+                                                            marginRight: 10,
+                                                            marginLeft: SIZES.padding,
+                                                            margin: SIZES.padding
+                                                        }}
+                                                    />
+                                                </View>
+                                            </View>
+                                        </View>
+                                        
+                                    : null
+                                )
+                            })
+                        }
+                    </View>
+                </TouchableOpacity>
+            )
+        }
+        return (
+            <FlatList
+                data={restaurant?.availableOn}
+                keyExtractor={item=>`${item.id}`}
+                renderItem={renderItem}
+                contentContainerStyle={{ 
+                    paddingHorizontal: SIZES.padding * 2,
+                    paddingBottom: 30
+                }}
+            />
+        )
+    }
     return (
         <SafeAreaView style={styles.container}>
             {renderHeader()}
             {renderRestaurantInfo()}
-            {/* {renderServices()} */}
+            {renderServices()}
         </SafeAreaView>
     )
 }

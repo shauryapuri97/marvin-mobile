@@ -88,9 +88,18 @@ const Home = ({ navigation }) => {
             closedMessage: "",
             eta: "20 – 35 MINS",
             availableOn: [
-                "Deliveroo",
-                "Uber Eats",
-                "Just Eat"
+                {
+                    service: "Deliveroo",
+                    eta: "30 – 45 MINS"
+                },
+                {
+                    service: "Uber Eats",
+                    eta: "30 – 45 MINS"
+                },
+                {
+                    service: "Just Eat",
+                    eta: "20 – 35 MINS"
+                }
             ]
         },
         {
@@ -108,8 +117,14 @@ const Home = ({ navigation }) => {
             closedMessage: "",
             eta: "10 – 20 MINS",
             availableOn: [
-                "Deliveroo",
-                "Uber Eats"
+                {
+                    service: "Deliveroo",
+                    eta: "10 – 20 MINS"
+                },
+                {
+                    service: "Uber Eats",
+                    eta: "15 – 25 MINS"
+                }
             ]
         },
         {
@@ -130,7 +145,10 @@ const Home = ({ navigation }) => {
             closedMessage: "",
             eta: "15 – 30 MINS",
             availableOn: [
-                "Deliveroo"
+                {
+                    service: "Deliveroo",
+                    eta: "15 – 30 MINS"
+                }
             ]
         },
         {
@@ -151,8 +169,14 @@ const Home = ({ navigation }) => {
             closedMessage: "",
             eta: "45 MINS",
             availableOn: [
-                "Deliveroo",
-                "Just Eat"
+                {
+                    service: "Deliveroo",
+                    eta: "30 MINS"
+                },
+                {
+                    service: "Just Eat",
+                    eta: "45 MINS"
+                }
             ]
         },
         {
@@ -173,9 +197,18 @@ const Home = ({ navigation }) => {
             closedMessage: "",
             eta: "15 – 30 MINS",
             availableOn: [
-                "Deliveroo",
-                "Uber Eats",
-                "Just Eat"
+                {
+                    service: "Deliveroo",
+                    eta: "15 – 30 MINS"
+                },
+                {
+                    service: "Uber Eats",
+                    eta: "15 – 25 MINS"
+                },
+                {
+                    service: "Just Eat",
+                    eta: "30 – 45 MINS"
+                }
             ]
         },
         {
@@ -195,7 +228,10 @@ const Home = ({ navigation }) => {
             closedMessage: "",
             eta: "15 – 25 MINS",
             availableOn: [
-                "Just Eat"
+                {
+                    service: "Just Eat",
+                    eta: "15 – 30 MINS"
+                }
             ]
         },
         {
@@ -216,7 +252,10 @@ const Home = ({ navigation }) => {
             closedMessage: "",
             eta: "15 – 30 MINS",
             availableOn: [
-                "Uber Eats"
+                {
+                    service: "Uber Eats",
+                    eta: "15 – 30 MINS"
+                }
             ]
         },
         {
@@ -237,7 +276,10 @@ const Home = ({ navigation }) => {
             closedMessage: "",
             eta: "15 – 30 MINS",
             availableOn: [
-                "Deliveroo"
+                {
+                    service: "Deliveroo",
+                    eta: "15 – 30 MINS"
+                }
             ]
         },
     ]
@@ -370,7 +412,8 @@ const Home = ({ navigation }) => {
                     }}
                     onPress={() => navigation.navigate("Restaurant", {
                         item,
-                        currentLocation
+                        currentLocation,
+                        services
                     })}
                 >
                     <View style={{ 
@@ -406,7 +449,7 @@ const Home = ({ navigation }) => {
                                     return(
                                         services.map((service)=>{
                                             return (
-                                                service.name == s ?
+                                                service.name == s.service ?
                                                     <View
                                                         style={{
                                                             flexDirection: 'row',
