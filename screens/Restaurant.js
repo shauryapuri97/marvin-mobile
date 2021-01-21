@@ -72,6 +72,7 @@ const Restaurant = ({ route, navigation }) => {
                         style={{
                             width: 50,
                             paddingLeft: SIZES.padding * 2,
+                            marginRight: SIZES.padding * 0.5,
                             justifyContent: 'center'
                         }}
                         // onPress={() => navigation.navigate("Filter", {
@@ -98,7 +99,7 @@ const Restaurant = ({ route, navigation }) => {
                         // })}
                     >
                         <Image
-                            source={icons.like}
+                            source={icons.share}
                             resizeMode="contain"
                             style={{
                                 width: 25,
@@ -227,7 +228,7 @@ const Restaurant = ({ route, navigation }) => {
                             serviceIcons?.map((service)=>{
                                 return (
                                     service.name == item.service ?
-                                        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}>
+                                        <View key={service} style={{ flex: 1, alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}>
                                             <View
                                                 style={{
                                                     width: '100%',
@@ -306,6 +307,9 @@ const Restaurant = ({ route, navigation }) => {
                 contentContainerStyle={{ 
                     paddingHorizontal: SIZES.padding * 2,
                     paddingBottom: 30
+                }}
+                style = {{
+                    height: '100%'
                 }}
             />
         )

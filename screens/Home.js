@@ -456,6 +456,7 @@ const Home = ({ navigation }) => {
                                                             alignItems: 'center',
                                                             justifyContent: 'center'
                                                         }}
+                                                        key={service}
                                                     >
                                                         <Image
                                                             source={service.icon}

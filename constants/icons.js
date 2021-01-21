@@ -1,5 +1,6 @@
 export const back = require("../assets/icons/back.png");
 export const go = require("../assets/icons/go.png");
+export const share = require("../assets/icons/share.png");
 export const car = require("../assets/icons/car.png");
 export const cutlery = require("../assets/icons/cutlery.png");
 export const donut = require("../assets/icons/donut.png");
@@ -57,5 +58,6 @@ export default {
     user,
     justeatLogo,
     deliverooLogo,
-    ubereatsLogo
+    ubereatsLogo,
+    share
 }
